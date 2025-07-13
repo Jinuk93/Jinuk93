@@ -37,7 +37,7 @@ jobs:
           node dist/index.js
         working-directory: ./until-github-readme
         env:
-          INPUT_USERNAME: until
+          INPUT_USERNAME: octoping
           INPUT_MAX_POSTS: 4
           INPUT_THEME: dark
           INPUT_FILENAME: blog-widget.svg
