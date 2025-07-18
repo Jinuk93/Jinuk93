@@ -5,7 +5,7 @@
 <a href="https://until.blog/@rlawlsdnr03">
   <img
     src="blog-widget.svg"
-    alt="Until Blog Post"
+    alt="🔽 Latest Blog Posts"
     width="640"
   />
 </a>
