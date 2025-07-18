@@ -1,0 +1,36 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: untilled
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: until-github-readme
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: until-github-readme
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'ap-northeast-2'}
+  timeout: 30
+
+plugins:
+  - serverless-offline
+
+package:
+  individually: true
+  patterns:
+    - "!node_modules/**"
+    - "!.serverless/**"
+    - "!.gitignore"
+    - "!.git/**"
+    - "!*.md"
+
+functions:
+  blogPostsSvg:
+    handler: src/handlers/svg-handler.generateSvg
+    events:
+      - httpApi:
+          path: /blog-posts-svg
+          method: get
+    package:
+      patterns:
+        - "src/**"

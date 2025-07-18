@@ -1,0 +1,38 @@
+{
+  "name": "until-github-readme",
+  "version": "1.0.0",
+  "description": "GitHub README에 Until 블로그의 최신 글을 표시하는 서비스",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "npm run build && node dist/dev.js",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc"
+  },
+  "keywords": [
+    "github",
+    "readme",
+    "blog",
+    "svg",
+    "github-action"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "axios": "^1.8.4",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.15",
+    "@typescript-eslint/eslint-plugin": "^8.29.1",
+    "@typescript-eslint/parser": "^8.29.1",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  }
+}
