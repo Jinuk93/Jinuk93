@@ -38,6 +38,7 @@ jobs:
         working-directory: ./until-github-readme
         env:
           INPUT_USERNAME: rlawlsdnr03
+          INPUT_TITLE: "🔽 Latest Blog Posts"   # ← 원하는 문구로 바꿔주세요
           INPUT_MAX_POSTS: 4
           INPUT_THEME: dark
           INPUT_FILENAME: blog-widget.svg
