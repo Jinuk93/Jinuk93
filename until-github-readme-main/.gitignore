@@ -1,7 +1,0 @@
-node_modules
-.serverless
-.build
-
-# Nuxt.js build / generate output
-.nuxt
-dist
