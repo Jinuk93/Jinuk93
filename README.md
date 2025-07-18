@@ -6,7 +6,7 @@
   <img
     src="blog-widget.svg"
     alt="Until Blog Post"
-    width="645"
+    width="500"
   />
 </a>
 
