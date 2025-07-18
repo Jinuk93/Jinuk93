@@ -4,7 +4,11 @@
  <!-- 🔽 Latest Blog Posts -->
 <!-- href는 자신의 블로그에 맞게 수정해주세요 -->
 <a href="https://until.blog/@rlawlsdnr03">
-  <img src="blog-widget.svg" alt="Until Blog Post">
+  <img
+    src="blog-widget.svg"
+    alt="Until Blog Post"
+    width="300"
+  />
 </a>
 
 🙋‍♂️ 이 목록은 자동으로 업데이트되며, 최신 블로그 글을 반영합니다.
