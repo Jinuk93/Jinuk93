@@ -1,9 +1,13 @@
 name: Update Until Blog Grass
 
+# GITHUB_TOKEN 에 쓰기 권한을 부여합니다
+permissions:
+  contents: write
+
 on:
+  # 수동 실행 및 매일 UTC 00시에 실행
   workflow_dispatch:
   schedule:
-    # 매일 0시(UTC)에 실행
     - cron: '0 0 * * *'
 
 jobs:
@@ -11,17 +15,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 코드 확인
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true
 
+      # Node.js 세팅
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install Puppeteer (no-save)
+      # Puppeteer 설치 (저장 없이)
+      - name: Install Puppeteer
         run: npm install puppeteer --no-save
 
+      # 블로그에서 잔디 SVG 스크래핑
       - name: Scrape Until Blog Grass
         run: |
           node << 'EOF'
@@ -29,18 +39,15 @@ jobs:
           const puppeteer = require('puppeteer');
 
           (async () => {
-            // Chromium 실행
             const browser = await puppeteer.launch({
-              args: ['--no-sandbox', '--disable-setuid-sandbox'],
+              args: ['--no-sandbox','--disable-setuid-sandbox'],
               headless: true
             });
-
             const page = await browser.newPage();
-            // 자신의 Blog URL 입력
             await page.goto('https://until.blog/@rlawlsdnr03', { waitUntil: 'networkidle2' });
             await page.waitForSelector('svg.react-activity-calendar__calendar', { timeout: 60000 });
 
-            // SVG만 추출
+            // 불필요한 속성/스크립트 제거 후 outerHTML 추출
             const svg = await page.$eval(
               'svg.react-activity-calendar__calendar',
               el => {
@@ -50,16 +57,18 @@ jobs:
               }
             );
 
-            // 파일로 저장
             fs.writeFileSync('until-grass.svg', svg);
             await browser.close();
           })();
           EOF
 
+      # 변경된 SVG 커밋 & 푸시
       - name: Commit & Push until-grass.svg
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'Update Until grass [skip ci]'
-          file_pattern: 'until-grass.svg'
-          author_name: 'github-actions[bot]'
-          author_email: '41898282+github-actions[bot]@users.noreply.github.com'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add until-grass.svg
+          git commit -m "Update Until grass [skip ci]" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
