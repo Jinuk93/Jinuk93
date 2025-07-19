@@ -1,29 +1,30 @@
+# .github/workflows/update-grass.yml
 name: Update Until Blog Grass
 
-# 수동/스케줄 트리거
 on:
+  # 수동 실행 & 매일 자정 정기 실행
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # 매일 자정에 실행 (원하시면 수정)
+    - cron: '0 0 * * *'
 
 jobs:
   scrape-and-commit:
     runs-on: ubuntu-latest
     steps:
-      # 1. 코드 체크아웃
+      # 1. 소스 체크아웃
       - uses: actions/checkout@v3
 
-      # 2. Node.js 설치 (버전은 필요에 따라 조정)
+      # 2. Node.js 설치
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # 3. 의존성 설치
-      - name: Install dependencies
-        run: npm ci
+      # 3. puppeteer-core만 설치 (package-lock.json이 없어도 동작)
+      - name: Install puppeteer-core
+        run: npm install puppeteer-core
 
-      # 4. 스크래핑 & SVG 생성
+      # 4. Until 블로그 열어서 SVG 스크래핑
       - name: Scrape Until Blog Grass
         run: |
           node << 'EOF'
@@ -32,34 +33,32 @@ jobs:
 
           (async () => {
             const browser = await puppeteer.launch({
-              args: ['--no-sandbox','--disable-setuid-sandbox']
+              args: ['--no-sandbox', '--disable-setuid-sandbox'],
+              headless: true
             });
             const page = await browser.newPage();
-
-            // 자신의 Until 블로그 주소로 변경하세요
             await page.goto('https://until.blog/@rlawlsdnr03', { waitUntil: 'networkidle2' });
-
-            // 캘린더 SVG 나타날 때까지 대기 (최대 60초)
+            // SVG 로드 대기
             await page.waitForSelector('svg.react-activity-calendar__calendar', { timeout: 60000 });
-
-            // SVG 요소만 뽑아내고, 내부 script 태그 제거
-            const svgContent = await page.evaluate(() => {
-              const svg = document.querySelector('svg.react-activity-calendar__calendar');
-              svg.removeAttribute('class'); 
-              svg.querySelectorAll('script').forEach(el => el.remove());
-              return svg.outerHTML;
-            });
-
-            fs.writeFileSync('until‑grass.svg', svgContent);
+            // 스크립트 태그 제거 후 outerHTML 반환
+            const svg = await page.$eval(
+              'svg.react-activity-calendar__calendar',
+              el => {
+                el.removeAttribute('class');
+                el.querySelectorAll('script').forEach(s => s.remove());
+                return el.outerHTML;
+              }
+            );
+            fs.writeFileSync('until-grass.svg', svg);
             await browser.close();
           })();
           EOF
 
-      # 5. 변경된 SVG 파일 커밋 & 푸시
-      - name: Commit & Push until‑grass.svg
+      # 5. 생성된 until-grass.svg 자동 커밋 & 푸시
+      - name: Commit & Push until-grass.svg
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: 'Update Until grass [skip ci]'
-          file_pattern: 'until‑grass.svg'
+          file_pattern: 'until-grass.svg'
           author_name: 'github-actions[bot]'
           author_email: '41898282+github-actions[bot]@users.noreply.github.com'
