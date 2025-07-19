@@ -4,7 +4,7 @@
 <p align="left">
   <a href="https://until.blog/@rlawlsdnr03">
     <img
-      src="https://raw.githubusercontent.com/rlawlsdnr03/Jinuk93/main/until-grass.svg"
+      src="https://raw.githubusercontent.com/Jinuk93/Jinuk93/main/until-grass.svg"
       alt="Until Blog Grass"
     />
   </a>
