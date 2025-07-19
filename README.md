@@ -3,7 +3,11 @@
  
 <div align="left">
   <a href="https://until.blog/@rlawlsdnr03">
-    <img src="./until-grass.svg" alt="Until Blog Grass" />
+    <img
+      src="https://raw.githubusercontent.com/rlawlsdnr03/Jinuk93/main/until-grass.svg"
+      alt="Until Blog Grass"
+      style="max-width: 100%;"
+    />
   </a>
 </div>
 
