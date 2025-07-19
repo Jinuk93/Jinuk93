@@ -1,8 +1,8 @@
 name: Update Until Blog Grass
 on:
-  schedule:
+  schedule:       # 매일 자정마다 실행
     - cron: "0 0 * * *"
-  workflow_dispatch:
+  workflow_dispatch:  # 수동 실행 버튼
 
 jobs:
   fetch-grass:
@@ -24,8 +24,11 @@ jobs:
           (async () => {
             const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
             const page = await browser.newPage();
-            await page.goto('https://until.blog/@jinuk93', { waitUntil: 'networkidle2' });
-            await page.waitForSelector('svg.react-activity-calendar__calendar');
+            await page.goto('https://until.blog/@jinuk93/', { waitUntil: 'networkidle0' });
+            await page.waitForTimeout(3000);
+            await page.evaluate(() => window.scrollBy(0, document.body.scrollHeight));
+            await page.waitForTimeout(2000);
+            await page.waitForSelector('svg.react-activity-calendar__calendar', { timeout: 60000 });
             const svgEl = await page.$('svg.react-activity-calendar__calendar');
             const svg = await svgEl.evaluate(el => el.outerHTML);
             fs.writeFileSync('until-grass.svg', svg);
