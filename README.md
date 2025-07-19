@@ -1,6 +1,7 @@
 ## 📝 Today What I Learned
 
 > **학습한 내용을 정리하고 기록하는 공간입니다 자세한 내용은 [학습 블로그](https://until.blog/@rlawlsdnr03)에서 확인 가능합니다.**
+<!--
 <p align="center">
   <img
     src="./until-grass.svg"
@@ -8,6 +9,8 @@
     width="844"
   />
 </p>
+-->
+
 <div align="left">
   <a href="https://until.blog/@rlawlsdnr03">
     <img
