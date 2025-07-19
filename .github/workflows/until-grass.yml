@@ -1,74 +1,67 @@
-name: Update Until Blog Grass
-
-# GITHUB_TOKEN 에 쓰기 권한을 부여합니다
-permissions:
-  contents: write
+name: Update Until Grass
 
 on:
-  # 수동 실행 및 매일 UTC 00시에 실행
-  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    # 매일 새벽 1시에 실행 (원하시는 스케줄로 바꿔주세요)
+    - cron: '0 1 * * *'
+  workflow_dispatch:
 
 jobs:
-  update-grass:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # 코드 확인
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          persist-credentials: true
 
-      # Node.js 세팅
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 20
 
-      # Puppeteer 설치 (저장 없이)
-      - name: Install Puppeteer
-        run: npm install puppeteer --no-save
+      - name: Install dependencies
+        run: npm install puppeteer-core chrome-aws-lambda
 
-      # 블로그에서 잔디 SVG 스크래핑
-      - name: Scrape Until Blog Grass
+      - name: Generate until-grass.svg
         run: |
           node << 'EOF'
+          const puppeteer = require('puppeteer-core');
           const fs = require('fs');
-          const puppeteer = require('puppeteer');
-
           (async () => {
+            // 크롬 실행 옵션 (환경에 맞게 executablePath 조정)
             const browser = await puppeteer.launch({
-              args: ['--no-sandbox','--disable-setuid-sandbox'],
-              headless: true
+              args: ['--no-sandbox', '--disable-setuid-sandbox'],
+              executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome-stable'
             });
             const page = await browser.newPage();
-            await page.goto('https://until.blog/@rlawlsdnr03', { waitUntil: 'networkidle2' });
+
+            // 블로그 페이지로 이동
+            await page.goto('https://until.blog/@rlawlsdnr03', { waitUntil: 'networkidle0' });
+            // 캘린더 SVG가 로드될 때까지 대기
             await page.waitForSelector('svg.react-activity-calendar__calendar', { timeout: 60000 });
 
-            // 불필요한 속성/스크립트 제거 후 outerHTML 추출
-            const svg = await page.$eval(
+            // SVG outerHTML 추출
+            const rawSvg = await page.$eval(
               'svg.react-activity-calendar__calendar',
-              el => {
-                el.removeAttribute('class');
-                el.querySelectorAll('script').forEach(s => s.remove());
-                return el.outerHTML;
-              }
+              el => el.outerHTML
             );
 
-            fs.writeFileSync('until-grass.svg', svg);
+            // <script> 태그 전부 제거
+            const cleanedSvg = rawSvg
+              .replace(/<script[\s\S]*?<\/script>/g, '')
+              .replace(/<script\s*\/>/g, '');
+
+            // 파일로 쓰기
+            fs.writeFileSync('until-grass.svg', cleanedSvg);
+
             await browser.close();
           })();
           EOF
 
-      # 변경된 SVG 커밋 & 푸시
-      - name: Commit & Push until-grass.svg
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add until-grass.svg
-          git commit -m "Update Until grass [skip ci]" || echo "No changes to commit"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit & Push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: until-grass.svg
+          commit_message: 'Update until-grass.svg [skip ci]'
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
