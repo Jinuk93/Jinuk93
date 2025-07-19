@@ -1,8 +1,12 @@
 name: Update Until Grass
 
+# GITHUB_TOKEN 에게 레포지토리 쓰기 권한을 부여합니다
+permissions:
+  contents: write
+
 on:
   schedule:
-    # 매일 새벽 1시에 실행 (원하시는 스케줄로 바꿔주세요)
+    # 매일 새벽 1시에 실행
     - cron: '0 1 * * *'
   workflow_dispatch:
 
@@ -13,6 +17,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          # GITHUB_TOKEN 으로 푸시할 수 있게 해 줍니다
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -28,32 +35,18 @@ jobs:
           const puppeteer = require('puppeteer-core');
           const fs = require('fs');
           (async () => {
-            // 크롬 실행 옵션 (환경에 맞게 executablePath 조정)
             const browser = await puppeteer.launch({
-              args: ['--no-sandbox', '--disable-setuid-sandbox'],
+              args: ['--no-sandbox','--disable-setuid-sandbox'],
               executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome-stable'
             });
             const page = await browser.newPage();
-
-            // 블로그 페이지로 이동
             await page.goto('https://until.blog/@rlawlsdnr03', { waitUntil: 'networkidle0' });
-            // 캘린더 SVG가 로드될 때까지 대기
             await page.waitForSelector('svg.react-activity-calendar__calendar', { timeout: 60000 });
-
-            // SVG outerHTML 추출
-            const rawSvg = await page.$eval(
-              'svg.react-activity-calendar__calendar',
-              el => el.outerHTML
-            );
-
-            // <script> 태그 전부 제거
+            const rawSvg = await page.$eval('svg.react-activity-calendar__calendar', el => el.outerHTML);
             const cleanedSvg = rawSvg
               .replace(/<script[\s\S]*?<\/script>/g, '')
               .replace(/<script\s*\/>/g, '');
-
-            // 파일로 쓰기
             fs.writeFileSync('until-grass.svg', cleanedSvg);
-
             await browser.close();
           })();
           EOF
@@ -61,6 +54,8 @@ jobs:
       - name: Commit & Push changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
+          # 꼭 추가해주세요!
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           file_pattern: until-grass.svg
           commit_message: 'Update until-grass.svg [skip ci]'
           commit_user_name: github-actions[bot]
