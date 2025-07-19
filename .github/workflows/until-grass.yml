@@ -63,6 +63,11 @@ jobs:
             sed -i '1s|<svg |<svg xmlns="http://www.w3.org/2000/svg" |' until-grass.svg
           fi
 
+      - name: Strip out any leftover <script> tags
+        run: |
+          # <script> 또는 </script>가 남아있다면 모두 삭제
+          sed -i '/<script\|<\/script>/d' until-grass.svg
+
       - name: Commit & Push changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
