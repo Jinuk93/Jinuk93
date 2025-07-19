@@ -1,7 +1,7 @@
 ## 📝 Today What I Learned
 > **학습한 내용을 정리하고 기록하는 공간입니다 자세한 내용은 [학습 블로그](https://until.blog/@rlawlsdnr03)에서 확인 가능합니다.**
  
-<a href="https://until.blog/@jinuk93">
+<a href="https://until.blog/@rlawlsdnr03">
   <img src="until-grass.svg" alt="Until Blog Grass">
 </a>
  <!-- 🔽 Latest Blog Posts -->
