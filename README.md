@@ -4,9 +4,6 @@
 <p align="center">
   <img src="./until-grass.svg" alt="GitHub Activity Calendar" />
 </p>
-<p align="left">
-  <img src="https://raw.githubusercontent.com/rlawlsdnr03/REPO/main/until-grass.svg" alt="GitHub Activity Calendar" />
-</p>
 
 <div align="left">
   <a href="https://until.blog/@rlawlsdnr03">
