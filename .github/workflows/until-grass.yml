@@ -1,46 +1,46 @@
-# .github/workflows/update-grass.yml
 name: Update Until Blog Grass
 
 on:
-  # 수동 실행 & 매일 자정 정기 실행
   workflow_dispatch:
   schedule:
+    # 매일 0시(UTC)에 실행
     - cron: '0 0 * * *'
 
 jobs:
-  scrape-and-commit:
+  update-grass:
     runs-on: ubuntu-latest
-    steps:
-      # 1. 소스 체크아웃
-      - uses: actions/checkout@v3
 
-      # 2. Node.js 설치
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # 3. puppeteer-core만 설치 (package-lock.json이 없어도 동작)
-      - name: Install puppeteer-core
-        run: npm install puppeteer-core
+      - name: Install Puppeteer (no-save)
+        run: npm install puppeteer --no-save
 
-      # 4. Until 블로그 열어서 SVG 스크래핑
       - name: Scrape Until Blog Grass
         run: |
           node << 'EOF'
           const fs = require('fs');
-          const puppeteer = require('puppeteer-core');
+          const puppeteer = require('puppeteer');
 
           (async () => {
+            // Chromium 실행
             const browser = await puppeteer.launch({
               args: ['--no-sandbox', '--disable-setuid-sandbox'],
               headless: true
             });
+
             const page = await browser.newPage();
+            // 자신의 Blog URL 입력
             await page.goto('https://until.blog/@rlawlsdnr03', { waitUntil: 'networkidle2' });
-            // SVG 로드 대기
             await page.waitForSelector('svg.react-activity-calendar__calendar', { timeout: 60000 });
-            // 스크립트 태그 제거 후 outerHTML 반환
+
+            // SVG만 추출
             const svg = await page.$eval(
               'svg.react-activity-calendar__calendar',
               el => {
@@ -49,12 +49,13 @@ jobs:
                 return el.outerHTML;
               }
             );
+
+            // 파일로 저장
             fs.writeFileSync('until-grass.svg', svg);
             await browser.close();
           })();
           EOF
 
-      # 5. 생성된 until-grass.svg 자동 커밋 & 푸시
       - name: Commit & Push until-grass.svg
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
