@@ -1,6 +1,6 @@
+# .github/workflows/until-grass.yml
 name: Update Until Grass
 
-# GITHUB_TOKEN 에게 레포지토리 쓰기 권한을 부여합니다
 permissions:
   contents: write
 
@@ -18,7 +18,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          # GITHUB_TOKEN 으로 푸시할 수 있게 해 줍니다
           persist-credentials: true
 
       - name: Setup Node.js
@@ -51,10 +50,22 @@ jobs:
           })();
           EOF
 
+      - name: Sanitize & Inject xmlns
+        run: |
+          # 1) &nbsp; → 일반 공백으로 변환
+          sed -i 's/&nbsp;/ /g' until-grass.svg
+          # 2) XML 선언 추가
+          if ! grep -q '<?xml' until-grass.svg; then
+            sed -i '1i<?xml version="1.0" encoding="UTF-8"?>' until-grass.svg
+          fi
+          # 3) xmlns 속성 삽입
+          if ! grep -q 'xmlns=' until-grass.svg; then
+            sed -i '1s|<svg |<svg xmlns="http://www.w3.org/2000/svg" |' until-grass.svg
+          fi
+
       - name: Commit & Push changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          # 꼭 추가해주세요!
           github_token: ${{ secrets.GITHUB_TOKEN }}
           file_pattern: until-grass.svg
           commit_message: 'Update until-grass.svg [skip ci]'
