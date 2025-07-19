@@ -10,6 +10,10 @@
     alt="GitHub Activity Calendar"
   />
 </p>
+<p align="center">
+  <img src="./until-grass.svg" alt="GitHub Activity Calendar" />
+</p>
+
 
 <div align="left">
   <a href="https://until.blog/@rlawlsdnr03">
