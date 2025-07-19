@@ -8,7 +8,6 @@
     width="844"
   />
 </p>
-
 <div align="left">
   <a href="https://until.blog/@rlawlsdnr03">
     <img
