@@ -1,16 +1,11 @@
-## 👋
-
-**"호기심을 기록으로, 기록을 경험으로."** <br>
-데이터와 AI 기술로 문제를 해결하는 과정에 집중합니다.
-
-## 🔗 Channel
+### Channel
 
 | Platform | Address |
 | :--- | :--- |
 | **📝 Blog** | [nugiwiki.tistory.com](https://nugiwiki.tistory.com) |
 | **📚 Wiki** | [wiki-8qj.pages.dev](https://wiki-8qj.pages.dev) |
 
-## 💻 Project
+### Project
 
 | Year | Project | Description | Tech Stack |
 | :---: | :--- | :--- | :--- |
