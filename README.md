@@ -1,11 +1,11 @@
-### Channel
+### 🟦 Channel
 
 | Platform | Address |
 | :--- | :--- |
 | **📝 Blog** | [nugiwiki.tistory.com](https://nugiwiki.tistory.com) |
 | **📚 Wiki** | [wiki-8qj.pages.dev](https://wiki-8qj.pages.dev) |
 
-### Project
+### 🟧 Project
 
 | Year | Project | Description | Tech Stack |
 | :---: | :--- | :--- | :--- |
