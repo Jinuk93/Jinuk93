@@ -1,6 +1,7 @@
-### Project
+## 👨‍💻 Project Portfolio
 
-| Year | Project | Description | Tech Stack |
-| :---: | :--- | :--- | :--- |
-| **2025** | [**Hybrid RFP Chatbot**](https://github.com/Jinuk93/Codeit-AI-1team-LLM-project) | **SFT와 RAG를 결합한 RFP 분석 솔루션**<br>RFP 문서 요약 및 질의응답 챗봇 | `Python`<br>`LLM`<br>`RAG` / `SFT` |
-| **2025** | [**Pill-Snap**](https://github.com/Jinuk93/pill-snap) | **경구약제 이미지 객체 검출**<br>알약 외형을 분석하여 약품 종류를 식별하는 모델링 | `Jupyter`<br>`Vision` |
+| Year | Project | Repository | Description | Tech Stack |
+| :---: | :--- | :---: | :--- | :--- |
+| **2025** | **RFPilot** | [**Service**](https://github.com/Jinuk93/02-RFPilot-SFT-RAG-Chatbot) | **입찰 제안요청서(RFP) 분석 및 실시간 질의응답 챗봇**<br>B2G 입찰 컨설팅 업무 효율화를 위한 RAG 기반 웹 서비스 구현<br>(Streamlit 배포) | `Python`<br>`LangChain`<br>`SFT / RAG`<br>`ChromaDB`<br>`Streamlit` |
+| | | [**Research**](https://github.com/Jinuk93/02-1-RFPilot-SFT-vs-RAG-Research) | **SFT와 Advanced RAG 성능 비교 및 최적화 연구**<br>Llama-3 모델을 활용한 **SFT vs RAG vs SFT+RAG(Hybrid)**<br>성능 비교 실험 및 분석 | `Python`<br>`Llama 3`<br>`SFT / RAG`<br>`Evaluation` |
+| **2025** | **Pill-Snap** | [**Main**](https://github.com/Jinuk93/01-PillSnap-Object-Detection) | **경구약제 이미지 객체 검출 (Object Detection)**<br>알약의 외형적 특징을 분석하여 약품 종류를 식별하는 모델링 | `Python`<br>`Jupyter`<br>`Computer Vision` |
