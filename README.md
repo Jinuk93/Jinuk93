@@ -1,3 +1,5 @@
+## 👨‍💻 Project Portfolio
+
 | Year | Project | Repository | Description | Tech Stack |
 | :---: | :--- | :---: | :--- | :--- |
 | **2025** | **RFPilot** | [**main**](https://github.com/Jinuk93/02-RFPilot-SFT-RAG-Chatbot/blob/main/README.md) | **입찰 제안요청서(RFP) 질의응답 챗봇**<br>: B2G 입찰 컨설팅 업무 효율화를 위한 SFT, RAG(Hybrid) 기반 웹 서비스 구현<br>(Streamlit 배포) | `Python`<br>`LangChain`<br>`SFT / RAG`<br>`ChromaDB`<br>`Streamlit` |
